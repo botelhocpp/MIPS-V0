@@ -17,23 +17,24 @@ USE IEEE.STD_LOGIC_1164.ALL;
 LIBRARY MIPS;
 USE MIPS.PKG_MIPS.ALL;
 
-ENTITY register_nbit IS
+ENTITY generic_register IS
+    GENERIC ( INIT_VALUE : reg32 := (OTHERS => '0') );
     PORT (
         D : IN reg32;
-        ld : IN STD_LOGIC;
+        ce : IN STD_LOGIC;
         clk : IN STD_LOGIC;
         rst : IN STD_LOGIC;
         Q : OUT reg32
     );
-END register_nbit;
+END generic_register;
 
-ARCHITECTURE hardware OF register_nbit IS
+ARCHITECTURE hardware OF generic_register IS
 BEGIN    
-    PROCESS(rst, clk, ld)
+    PROCESS(rst, clk, ce)
     BEGIN
         IF(rst = '1') THEN
-            Q <= (OTHERS => '0');
-        ELSIF(RISING_EDGE(clk) AND ld = '1') THEN
+            Q <= INIT_VALUE;
+        ELSIF(RISING_EDGE(clk) AND ce = '1') THEN
             Q <= D;
         END IF;
     END PROCESS;

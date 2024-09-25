@@ -24,13 +24,13 @@ ENTITY ram IS
     );
     PORT (
         address : IN reg32;
-        ce_n : IN STD_LOGIC;
+        ce : IN STD_LOGIC;
         rw : IN STD_LOGIC;
         data : INOUT reg32
     );
 END ram;
 
-ARCHITECTURE hardware OF ram IS 
+ARCHITECTURE behavioral OF ram IS 
     SIGNAL contents : mem_array_t := InitMEM("data.txt");
     
     SIGNAL address_integer : INTEGER;
@@ -38,9 +38,9 @@ BEGIN
     address_integer <= TO_INTEGER( UNSIGNED( address(31 DOWNTO 2) ) - ureg32(START_ADDR) );
     
     -- Read from Memory
-    PROCESS(address_integer, ce_n, rw)
+    PROCESS(address_integer, ce, rw)
     BEGIN
-        IF(ce_n = '0' AND rw = '0') THEN
+        IF(ce = '1' AND rw = '1') THEN
             data <= contents(address_integer);
         ELSE
             data <= (OTHERS => 'Z');
@@ -48,10 +48,10 @@ BEGIN
     END PROCESS;
     
     -- Write into Memory    
-    PROCESS(address_integer, ce_n, rw)
+    PROCESS(address_integer, ce, rw)
     BEGIN
-        IF(ce_n = '0' AND rw = '1') THEN
+        IF(ce = '1' AND rw = '0') THEN
             contents(address_integer) <= data;
         END IF;
     END PROCESS;
-END hardware;
+END behavioral;

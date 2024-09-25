@@ -28,9 +28,9 @@ ENTITY rom IS
     );
 END rom;
 
-ARCHITECTURE hardware OF rom IS 
+ARCHITECTURE behavioral OF rom IS 
     CONSTANT contents : mem_array_t := InitMEM("code.txt");
     
 BEGIN 
     data <= contents( TO_INTEGER( UNSIGNED( address(31 DOWNTO 2) ) - ureg32(START_ADDR) ) );
-END hardware;
+END behavioral;
