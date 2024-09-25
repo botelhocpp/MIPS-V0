@@ -16,32 +16,32 @@ USE IEEE.STD_LOGIC_1164.ALL;
 USE IEEE.NUMERIC_STD.ALL;
 
 LIBRARY MIPS;
-USE MIPS.pkg_mips.ALL;
+USE MIPS.PKG_MIPS.ALL;
 
 ENTITY alu IS
     PORT(
-        A : IN reg32;
-        B : IN reg32;
-        op : IN inst_type_t;
+        op1 : IN reg32;
+        op2 : IN reg32;
+        sel : IN inst_type_t;
         zero : OUT STD_LOGIC;
-        Q : OUT reg32
+        res : OUT reg32
     );
 END alu;
 
 ARCHITECTURE behavioral OF alu IS
     CONSTANT CONST_ZERO : reg32 := (OTHERS => '0');
     
-    SIGNAL res : reg32;
+    SIGNAL Q : reg32;
 BEGIN
-    Q <= res;
+    res <= Q;
     
-    WITH op SELECT
-        res <=  (reg32(sreg32(A) - sreg32(B)))  WHEN SUBU,
-                (A AND B)                       WHEN AAND,
-                (A OR B)                        WHEN OOR | ORI,
-                (A XOR B)                       WHEN XXOR,
-                (A NOR B)                       WHEN NNOR,
-                (reg32(sreg32(A) + sreg32(B)))  WHEN OTHERS;
+    WITH sel SELECT
+        Q <=    (reg32(sreg32(op1) - sreg32(op2)))  WHEN SUBU,
+                (op1 AND op2)                       WHEN AAND,
+                (op1 OR op2)                        WHEN OOR | ORI,
+                (op1 XOR op2)                       WHEN XXOR,
+                (op1 NOR op2)                       WHEN NNOR,
+                (reg32(sreg32(op1) + sreg32(op2)))  WHEN OTHERS;
 	
-	zero <= '1' WHEN (res = CONST_ZERO) ELSE '0';
+	zero <= '1' WHEN (Q = CONST_ZERO) ELSE '0';
 END ARCHITECTURE;
