@@ -28,7 +28,7 @@ PACKAGE pkg_mips IS
     
     CONSTANT CONST_ADDR_NUM : INTEGER := 2048;
     
-    TYPE mem_array_t IS ARRAY (0 TO CONST_ADDR_NUM) OF reg32;
+    TYPE mem_array_t IS ARRAY (0 TO CONST_ADDR_NUM - 1) OF reg32;
     
     TYPE inst_type_t IS (
         ADDU,
@@ -63,7 +63,7 @@ PACKAGE BODY pkg_mips IS
     BEGIN
       WHILE NOT ENDFILE(text_file) LOOP
         READLINE(text_file, text_line);
-        BREAD(text_line, contents(i));
+        HREAD(text_line, contents(i));
         i := i + 1;
       END LOOP;
       

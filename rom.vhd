@@ -30,7 +30,10 @@ END rom;
 
 ARCHITECTURE behavioral OF rom IS 
     CONSTANT contents : mem_array_t := InitMEM("code.txt");
+ 
+    SIGNAL rom_address : ureg32;
     
 BEGIN 
-    data <= contents( TO_INTEGER( UNSIGNED( address(31 DOWNTO 2) ) - ureg32(START_ADDR) ) );
+    rom_address <= ureg32(address) - ureg32(START_ADDR);
+    data <= contents( TO_INTEGER(rom_address(31 DOWNTO 2) ) );
 END behavioral;

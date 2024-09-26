@@ -33,25 +33,31 @@ END ram;
 ARCHITECTURE behavioral OF ram IS 
     SIGNAL contents : mem_array_t := InitMEM("data.txt");
     
+    SIGNAL ram_address : ureg32;
     SIGNAL address_integer : INTEGER;
 BEGIN 
-    address_integer <= TO_INTEGER( UNSIGNED( address(31 DOWNTO 2) ) - ureg32(START_ADDR) );
+    ram_address <= ureg32(address) - ureg32(START_ADDR);
+    address_integer <= TO_INTEGER( ram_address(31 DOWNTO 2) );
     
     -- Read from Memory
     PROCESS(address_integer, ce, rw)
     BEGIN
-        IF(ce = '1' AND rw = '1') THEN
-            data <= contents(address_integer);
-        ELSE
-            data <= (OTHERS => 'Z');
+        IF(address_integer < CONST_ADDR_NUM) THEN
+            IF(ce = '1' AND rw = '1') THEN
+                data <= contents(address_integer);
+            ELSE
+                data <= (OTHERS => 'Z');
+            END IF;
         END IF;
     END PROCESS;
     
     -- Write into Memory    
     PROCESS(address_integer, ce, rw)
     BEGIN
-        IF(ce = '1' AND rw = '0') THEN
-            contents(address_integer) <= data;
+        IF(address_integer < CONST_ADDR_NUM) THEN
+            IF(ce = '1' AND rw = '0') THEN
+                contents(address_integer) <= data;
+            END IF;
         END IF;
     END PROCESS;
 END behavioral;

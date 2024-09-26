@@ -47,18 +47,19 @@ BEGIN
         data => data
     );
     RAM_COMP: ENTITY WORK.ram
-    GENERIC MAP ( START_ADDR => x"10010000" )
-    PORT MAP ( 
-        address => i_address,
-        data => instruction
-    );
-    ROM_COMP: ENTITY WORK.rom
-    GENERIC MAP ( START_ADDR => x"00400000" )
+    -- GENERIC MAP ( START_ADDR => x"10010000" )
+    GENERIC MAP ( START_ADDR => x"00000000" )
     PORT MAP ( 
         address => d_address,
         ce => ce,
         rw => rw,
         data => data
+    );
+    ROM_COMP: ENTITY WORK.rom
+    GENERIC MAP ( START_ADDR => x"00400000" )
+    PORT MAP ( 
+        address => i_address,
+        data => instruction
     );
     
     clk <= NOT clk AFTER CLK_PERIOD/2;
@@ -66,9 +67,9 @@ BEGIN
     PROCESS
     BEGIN
         rst <= '1';
-        WAIT FOR CLK_PERIOD/2;
+        WAIT FOR CLK_PERIOD/4;
         
         rst <= '0';
         WAIT;
     END PROCESS;
-END behaviour;
+END behavioral;
