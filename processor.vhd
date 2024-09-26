@@ -32,6 +32,8 @@ END processor;
 
 ARCHITECTURE behavioral OF processor IS
     SIGNAL uins : instruction_t;
+    SIGNAL zero : STD_LOGIC;
+    SIGNAL carry : STD_LOGIC;
 BEGIN
     DP_COMP: ENTITY WORK.datapath
     PORT MAP(
@@ -39,12 +41,16 @@ BEGIN
         uins => uins, 
         clk => clk, 
         rst => rst, 
+        zero => zero,
+        carry => carry,
         d_address => d_address,
         data => data
     );
     UC_COMP: ENTITY WORK.control_unit
     PORT MAP(
         instruction => instruction,
+        zero => zero,
+        carry => carry,
         clk => clk, 
         rst => rst, 
         uins => uins, 

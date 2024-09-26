@@ -47,7 +47,6 @@ BEGIN
         data => data
     );
     RAM_COMP: ENTITY WORK.ram
-    -- GENERIC MAP ( START_ADDR => x"10010000" )
     GENERIC MAP ( START_ADDR => x"00000000" )
     PORT MAP ( 
         address => d_address,
