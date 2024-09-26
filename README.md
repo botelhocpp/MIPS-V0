@@ -1,7 +1,7 @@
 # MIPS-V0
 A simplified MIPS processor made in VHDL for the "Digital Systems" course. The diagram of the version 1 of the processor can be seen bellow:
 
-![image](https://github.com/botelhocpp/MIPS-V0/docs/diagram.png)
+![image](https://github.com/botelhocpp/MIPS-V0/blob/version3/docs/diagram.png)
 
 ## Instructions Supported
 
