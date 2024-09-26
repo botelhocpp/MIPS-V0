@@ -67,21 +67,24 @@ END pkg_mips;
 
 PACKAGE BODY pkg_mips IS
     IMPURE FUNCTION InitMEM(file_name : STRING) RETURN mem_array_t IS
-      FILE text_file : TEXT OPEN READ_MODE IS file_name;
+      FILE text_file : TEXT;
       VARIABLE text_line : LINE;
       VARIABLE contents : mem_array_t;
       VARIABLE i : INTEGER := 0;
+      VARIABLE success : FILE_OPEN_STATUS;
     BEGIN
-      WHILE NOT ENDFILE(text_file) LOOP
-        READLINE(text_file, text_line);
-        HREAD(text_line, contents(i));
-        i := i + 1;
-      END LOOP;
-      
-      FOR j IN i TO CONST_ADDR_NUM - 1 LOOP
-        contents(j) := (OTHERS => '0');
-      END LOOP;
-      
+        FILE_OPEN(success, text_file, file_name, READ_MODE);
+        IF (success = OPEN_OK) THEN
+          WHILE NOT ENDFILE(text_file) LOOP
+            READLINE(text_file, text_line);
+            HREAD(text_line, contents(i));
+            i := i + 1;
+          END LOOP;
+          
+          FOR j IN i TO CONST_ADDR_NUM - 1 LOOP
+            contents(j) := (OTHERS => '0');
+          END LOOP;
+      END IF;
       RETURN contents;
     END FUNCTION;
 END pkg_mips;

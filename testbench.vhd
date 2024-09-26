@@ -46,18 +46,28 @@ BEGIN
         d_address => d_address,
         data => data
     );
-    RAM_COMP: ENTITY WORK.ram
-    GENERIC MAP ( START_ADDR => x"00000000" )
+    RAM_COMP: ENTITY WORK.memory
+    GENERIC MAP (
+        START_ADDR => x"00000000",
+        CONTENTS_FILE => "data.txt"
+    )
     PORT MAP ( 
         address => d_address,
         ce => ce,
         rw => rw,
+        clk => clk,
         data => data
     );
-    ROM_COMP: ENTITY WORK.rom
-    GENERIC MAP ( START_ADDR => x"00400000" )
+    ROM_COMP: ENTITY WORK.memory
+    GENERIC MAP (
+        START_ADDR => x"00400000",
+        CONTENTS_FILE => "code.txt"
+    )
     PORT MAP ( 
         address => i_address,
+        ce => '1',
+        rw => '1',
+        clk => clk,
         data => instruction
     );
     
