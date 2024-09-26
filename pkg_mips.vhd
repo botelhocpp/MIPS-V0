@@ -36,10 +36,21 @@ PACKAGE pkg_mips IS
         AAND,
         OOR, 
         XXOR, 
-        NNOR, 
+        NNOR,
+        RROR,
+        RROL,
+        CMP,
+        PSH,
+        POP,
+        ORI, 
+        SHRI,
+        SHLI,
         LW, 
         SW, 
-        ORI, 
+        B,
+        BEQ,
+        BLT,
+        BGT,
         INVALID
     );
         
