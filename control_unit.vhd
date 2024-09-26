@@ -58,9 +58,7 @@ BEGIN
     
     -- Instruction Decoder
     uins.i <= i;  
-    i <= PSH    WHEN instruction(31 DOWNTO 26) = "000000" AND instruction(10 DOWNTO 0) = "00000001010" ELSE
-         POP    WHEN instruction(31 DOWNTO 26) = "000000" AND instruction(10 DOWNTO 0) = "00000001011" ELSE
-         CMP    WHEN instruction(31 DOWNTO 26) = "000000" AND instruction(10 DOWNTO 0) = "00000100000" ELSE
+    i <= CMP    WHEN instruction(31 DOWNTO 26) = "000000" AND instruction(10 DOWNTO 0) = "00000100000" ELSE
          ADDU   WHEN instruction(31 DOWNTO 26) = "000000" AND instruction(10 DOWNTO 0) = "00000100001" ELSE
          SUBU   WHEN instruction(31 DOWNTO 26) = "000000" AND instruction(10 DOWNTO 0) = "00000100011" ELSE
          AAND   WHEN instruction(31 DOWNTO 26) = "000000" AND instruction(10 DOWNTO 0) = "00000100100" ELSE
@@ -78,6 +76,8 @@ BEGIN
          BEQ    WHEN instruction(31 DOWNTO 26) = "000011" ELSE
          BLT    WHEN instruction(31 DOWNTO 26) = "000100" ELSE
          BGT    WHEN instruction(31 DOWNTO 26) = "000101" ELSE
+         PSH    WHEN instruction(31 DOWNTO 26) = "000110" ELSE
+         POP    WHEN instruction(31 DOWNTO 26) = "000111" ELSE
          INVALID;
      
     -- In case of exception

@@ -41,6 +41,10 @@ ARCHITECTURE behavioral OF datapath IS
     SIGNAL flags_input : reg32;
     SIGNAL flags_output : reg32;
     
+    SIGNAL sp_input : reg32;
+    SIGNAL sp_load : STD_LOGIC;
+    SIGNAL sp_output : reg32;
+    
     SIGNAL alu_zero : STD_LOGIC;
     SIGNAL alu_carry : STD_LOGIC;
     SIGNAL instR : STD_LOGIC;
@@ -75,12 +79,30 @@ BEGIN
         rst => rst, 
         Q => flags_output
     );
-    flags_input <= (1 => alu_carry, 0 => alu_zero, OTHERS => '0');
+    SP_REG: ENTITY WORK.generic_register
+    GENERIC MAP ( INIT_VALUE => x"000007fc" )
+    PORT MAP (
+        D => sp_input,
+        ce => sp_load,
+        clk => clk,
+        rst => rst,
+        Q => sp_output
+    );
+    
+    -- Stack Management
+    sp_input <= reg32(ureg32(sp_output) - 4) WHEN (uins.i = PSH) ELSE
+                reg32(ureg32(sp_output) + 4);
+                
+    sp_load <= '1' WHEN (uins.i = PSH OR uins.i = POP) ELSE '0';
+                    
+    d_address <= (sp_output) WHEN (uins.i = PSH) ELSE
+                reg32(ureg32(sp_output) + 4) WHEN (uins.i = POP) ELSE
+                result;
     
     -- R Type Instructions Detector
     instR <= '1' WHEN (uins.i = ADDU OR uins.i = SUBU OR uins.i = AAND OR 
                        uins.i = OOR  OR uins.i = XXOR OR uins.i = NNOR OR
-                       uins.i = CMP) ELSE '0';
+                       uins.i = CMP  OR uins.i = PSH  OR uins.i = POP) ELSE '0';
                        
     -- Multiplexer 1
     M1 : adD <= instruction(15 DOWNTO 11) WHEN (instR = '1') ELSE instruction(20 DOWNTO 16);
@@ -95,12 +117,12 @@ BEGIN
     M3 : op2 <= R2 WHEN (instR = '1') ELSE ext32;
     
     -- Multiplexer 4                                              
-    M4 : reg_dest <= data WHEN (uins.i = LW) ELSE result;
+    M4 : reg_dest <= data WHEN (uins.i = LW OR uins.i = POP) ELSE result;
     
     -- Data bus Buffer
     WMem : data <= R2 WHEN (uins.rw = '0' AND uins.ce = '1') ELSE (OTHERS => 'Z'); 
-                    
-    d_address <= result;
+    
+    flags_input <= (1 => alu_carry, 0 => alu_zero, OTHERS => '0');
     zero <= flags_output(0);
     carry <= flags_output(1);
 END Behavioral;

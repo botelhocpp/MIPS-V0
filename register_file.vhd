@@ -42,19 +42,6 @@ BEGIN
     FOR i IN 31 DOWNTO 0 GENERATE
         registers_ce(i) <= '1' when (i /= 0 AND TO_INTEGER(UNSIGNED(AdWP)) = i AND ce = '1') else '0';
         
-        GENERATE_SP_REG:
-        IF (i = 29) GENERATE
-        SP_REG: ENTITY WORK.generic_register
-        GENERIC MAP ( INIT_VALUE => x"10010800" )
-        PORT MAP (
-            D => DataWP,
-            ce => registers_ce(i),
-            clk => clk,
-            rst => rst,
-            Q => registers(i)
-        );
-        END GENERATE;
-        
         GENERATE_GP_REGS:
         IF (i /= 29) GENERATE
         GP_REGS: ENTITY WORK.generic_register
