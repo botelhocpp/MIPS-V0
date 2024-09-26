@@ -5,9 +5,9 @@
 -- Project Name: MIPS-V0
 -- Target Devices: Zybo Zynq-7000
 -- Language Version: VHDL-2008
--- Description: Testbench for the processor.
+-- Description: Testbench for the processor, connecting it to the memories.
 -- 
--- Dependencies: processor, rom, ram
+-- Dependencies: processor, memory
 -- 
 ----------------------------------------------------------------------------------
 
@@ -23,6 +23,7 @@ END testbench;
 ARCHITECTURE behavioral OF testbench IS
     CONSTANT CLK_PERIOD : TIME := 20ns;
     
+    -- Intermediary Signals
     SIGNAL data : reg32;
     SIGNAL d_address : reg32;
     SIGNAL i_address : reg32;
