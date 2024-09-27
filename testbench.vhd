@@ -49,7 +49,7 @@ BEGIN
     );
     RAM_COMP: ENTITY WORK.memory
     GENERIC MAP (
-        START_ADDR => x"00000000",
+        START_ADDR => x"10010000",
         CONTENTS_FILE => "data.txt"
     )
     PORT MAP ( 

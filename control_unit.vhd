@@ -76,8 +76,8 @@ BEGIN
          BEQ    WHEN instruction(31 DOWNTO 26) = "000011" ELSE
          BLT    WHEN instruction(31 DOWNTO 26) = "000100" ELSE
          BGT    WHEN instruction(31 DOWNTO 26) = "000101" ELSE
-         PSH    WHEN instruction(31 DOWNTO 26) = "000110" ELSE
-         POP    WHEN instruction(31 DOWNTO 26) = "000111" ELSE
+         PSH    WHEN instruction(31 DOWNTO 26) = "000110" AND instruction(10 DOWNTO 0) = "00000000000" ELSE
+         POP    WHEN instruction(31 DOWNTO 26) = "000111" AND instruction(10 DOWNTO 0) = "00000000000" ELSE
          INVALID;
      
     -- In case of exception

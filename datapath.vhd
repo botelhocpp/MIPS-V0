@@ -80,7 +80,7 @@ BEGIN
         Q => flags_output
     );
     SP_REG: ENTITY WORK.generic_register
-    GENERIC MAP ( INIT_VALUE => x"000007fc" )
+    GENERIC MAP ( INIT_VALUE => x"100107fc" )
     PORT MAP (
         D => sp_input,
         ce => sp_load,

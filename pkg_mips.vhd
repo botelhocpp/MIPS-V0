@@ -97,7 +97,7 @@ PACKAGE BODY pkg_mips IS
     IMPURE FUNCTION InitMEM(file_name : STRING) RETURN mem_array_t IS
       FILE text_file : TEXT;
       VARIABLE text_line : LINE;
-      VARIABLE contents : mem_array_t;
+      VARIABLE contents : mem_array_t := (OTHERS => (OTHERS => '0'));
       VARIABLE i : INTEGER := 0;
       VARIABLE success : FILE_OPEN_STATUS;
       VARIABLE hex_string : STRING(1 TO 8);
