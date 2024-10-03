@@ -44,8 +44,8 @@ BEGIN
                 (op1 NOR op2)                                               WHEN NNOR,
                 (reg32(SHIFT_RIGHT(ureg32(op1), TO_INTEGER(ureg32(op2)))))  WHEN SHRI,
                 (reg32(SHIFT_LEFT(ureg32(op1), TO_INTEGER(ureg32(op2)))))   WHEN SHLI,
-                (reg32(ROTATE_LEFT(ureg32(op1), 1)))                        WHEN RROR,
-                (reg32(ROTATE_RIGHT(ureg32(op1), 1)))                       WHEN RROL,
+                (reg32(ROTATE_RIGHT(ureg32(op1), TO_INTEGER(ureg32(op2))))) WHEN RROR,
+                (reg32(ROTATE_LEFT(ureg32(op1), TO_INTEGER(ureg32(op2)))))  WHEN RROL,
                 (reg32(ureg32(op1) + ureg32(op2)))                          WHEN OTHERS;
 	
 	zero <= '1' WHEN (Q = CONST_ZERO) ELSE '0';
